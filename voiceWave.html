@@ -29,7 +29,7 @@
     }
   </style>
 </head>
-<body data-animate="false">
+<body>
   <div class="dot-container">
     <div class="dot"></div>
     <div class="dot"></div>
@@ -64,17 +64,22 @@
       });
     }
 
+    // Detect changes from Wix Velo via attribute injection
     const observer = new MutationObserver(() => {
-      const val = document.body.getAttribute("data-animate");
-      if (val === "true") {
+      const value = document.documentElement.getAttribute("data-animate");
+      if (value === "true") {
         startAnimation();
       } else {
         stopAnimation();
       }
     });
 
-    observer.observe(document.body, { attributes: true });
-    stopAnimation(); // default still
+    observer.observe(document.documentElement, { attributes: true });
+
+    // Also run once on load
+    const initial = document.documentElement.getAttribute("data-animate");
+    if (initial === "true") startAnimation();
+    else stopAnimation();
   </script>
 </body>
 </html>
