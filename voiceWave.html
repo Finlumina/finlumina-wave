@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-animate="false">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Voice Wave</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       background: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .dot-container {
@@ -64,7 +64,7 @@
       });
     }
 
-    // Detect changes from Wix Velo via attribute injection
+    // 👇 THIS WATCHES THE <html> ELEMENT, which Wix updates
     const observer = new MutationObserver(() => {
       const value = document.documentElement.getAttribute("data-animate");
       if (value === "true") {
@@ -76,10 +76,12 @@
 
     observer.observe(document.documentElement, { attributes: true });
 
-    // Also run once on load
-    const initial = document.documentElement.getAttribute("data-animate");
-    if (initial === "true") startAnimation();
-    else stopAnimation();
+    // ✅ Run once on load
+    if (document.documentElement.getAttribute("data-animate") === "true") {
+      startAnimation();
+    } else {
+      stopAnimation();
+    }
   </script>
 </body>
 </html>
