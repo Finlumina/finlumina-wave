@@ -1,42 +1,78 @@
-<script>
-  const dots = document.querySelectorAll(".dot");
-  let animation;
-
-  function startAnimation() {
-    clearInterval(animation);
-    animation = setInterval(() => {
-      dots.forEach((dot, i) => {
-        setTimeout(() => {
-          dot.style.transform = "scaleY(1.6)";
-          dot.style.opacity = "1";
-        }, i * 100);
-        setTimeout(() => {
-          dot.style.transform = "scaleY(1)";
-          dot.style.opacity = "0.5";
-        }, i * 100 + 300);
-      });
-    }, 600);
-  }
-
-  function stopAnimation() {
-    clearInterval(animation);
-    dots.forEach(dot => {
-      dot.style.transform = "scaleY(1)";
-      dot.style.opacity = "0.5";
-    });
-  }
-
-  const customElement = document.body;
-
-  const observer = new MutationObserver(() => {
-    const value = customElement.getAttribute("data-animate");
-    if (value === "true") {
-      startAnimation();
-    } else {
-      stopAnimation();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
     }
-  });
 
-  observer.observe(customElement, { attributes: true });
-  stopAnimation();
-</script>
+    .dot-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 20px;
+      background-color: #00bcd4;
+      border-radius: 4px;
+      opacity: 0.5;
+      transform: scaleY(1);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+  </style>
+</head>
+<body data-animate="false">
+  <div class="dot-container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <script>
+    const dots = document.querySelectorAll(".dot");
+    let animation;
+
+    function startAnimation() {
+      clearInterval(animation);
+      animation = setInterval(() => {
+        dots.forEach((dot, i) => {
+          setTimeout(() => {
+            dot.style.transform = "scaleY(1.6)";
+            dot.style.opacity = "1";
+          }, i * 100);
+          setTimeout(() => {
+            dot.style.transform = "scaleY(1)";
+            dot.style.opacity = "0.5";
+          }, i * 100 + 300);
+        });
+      }, 600);
+    }
+
+    function stopAnimation() {
+      clearInterval(animation);
+      dots.forEach(dot => {
+        dot.style.transform = "scaleY(1)";
+        dot.style.opacity = "0.5";
+      });
+    }
+
+    const observer = new MutationObserver(() => {
+      const value = document.body.getAttribute("data-animate");
+      if (value === "true") {
+        startAnimation();
+      } else {
+        stopAnimation();
+      }
+    });
+
+    observer.observe(document.body, { attributes: true });
+    stopAnimation(); // start still
+  </script>
+</body>
+</html>
