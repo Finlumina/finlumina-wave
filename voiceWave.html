@@ -10,6 +10,9 @@
         align-items: center;
         height: 100%;
       }
+      #dots {
+        display: flex;
+      }
       .dot {
         width: 6px;
         height: 16px;
@@ -30,7 +33,11 @@
     </div>
 
     <script>
-      const dots = [document.getElementById("dot1"), document.getElementById("dot2"), document.getElementById("dot3")];
+      const dots = [
+        document.getElementById("dot1"),
+        document.getElementById("dot2"),
+        document.getElementById("dot3")
+      ];
       let interval;
 
       function startWave() {
