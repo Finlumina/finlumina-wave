@@ -16,8 +16,6 @@
     .dot-container {
       display: flex;
       gap: 8px;
-      padding: 5px;
-      border: 1px solid red; /* ✅ TEMP: makes it visible on Wix */
     }
 
     .dot {
@@ -67,8 +65,8 @@
     }
 
     const observer = new MutationObserver(() => {
-      const value = document.body.getAttribute("data-animate");
-      if (value === "true") {
+      const val = document.body.getAttribute("data-animate");
+      if (val === "true") {
         startAnimation();
       } else {
         stopAnimation();
@@ -76,7 +74,7 @@
     });
 
     observer.observe(document.body, { attributes: true });
-    stopAnimation();
+    stopAnimation(); // default still
   </script>
 </body>
 </html>
