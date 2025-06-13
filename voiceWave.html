@@ -1,43 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    body {
-      margin: 0;
-      background: transparent;
-    }
-    .wave {
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 6px;
-      height: 40px;
-      width: 60px;
-    }
+<script>
+  const dots = document.querySelectorAll(".dot");
+  let animation;
 
-    .bar {
-      width: 6px;
-      height: 20%;
-      background-color: #00ADEF;
-      border-radius: 3px;
-      animation: bounce 1s infinite ease-in-out;
-    }
+  function startAnimation() {
+    clearInterval(animation);
+    animation = setInterval(() => {
+      dots.forEach((dot, i) => {
+        setTimeout(() => {
+          dot.style.transform = "scaleY(1.6)";
+          dot.style.opacity = "1";
+        }, i * 100);
+        setTimeout(() => {
+          dot.style.transform = "scaleY(1)";
+          dot.style.opacity = "0.5";
+        }, i * 100 + 300);
+      });
+    }, 600);
+  }
 
-    .bar:nth-child(1) { animation-delay: 0s; }
-    .bar:nth-child(2) { animation-delay: 0.2s; }
-    .bar:nth-child(3) { animation-delay: 0.4s; }
+  function stopAnimation() {
+    clearInterval(animation);
+    dots.forEach(dot => {
+      dot.style.transform = "scaleY(1)";
+      dot.style.opacity = "0.5";
+    });
+  }
 
-    @keyframes bounce {
-      0%, 100% { height: 20%; }
-      50% { height: 100%; }
+  const customElement = document.body;
+
+  const observer = new MutationObserver(() => {
+    const value = customElement.getAttribute("data-animate");
+    if (value === "true") {
+      startAnimation();
+    } else {
+      stopAnimation();
     }
-  </style>
-</head>
-<body>
-  <div class="wave">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-  </div>
-</body>
-</html>
+  });
+
+  observer.observe(customElement, { attributes: true });
+  stopAnimation();
+</script>
