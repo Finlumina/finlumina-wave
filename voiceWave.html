@@ -1,87 +1,43 @@
-<!DOCTYPE html>
-<html lang="en" data-animate="false">
-<head>
-  <meta charset="UTF-8" />
-  <title>Voice Wave</title>
-  <style>
-    html, body {
-      margin: 0;
-      background: transparent;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+<script>
+  const dots = document.querySelectorAll(".dot");
 
-    .dot-container {
-      display: flex;
-      gap: 8px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 20px;
-      background-color: #00bcd4;
-      border-radius: 4px;
-      opacity: 0.5;
-      transform: scaleY(1);
-      transition: transform 0.2s, opacity 0.2s;
-    }
-  </style>
-</head>
-<body>
-  <div class="dot-container">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-  </div>
-
-  <script>
-    const dots = document.querySelectorAll(".dot");
-    let animation;
-
-    function startAnimation() {
-      clearInterval(animation);
-      animation = setInterval(() => {
-        dots.forEach((dot, i) => {
-          setTimeout(() => {
-            dot.style.transform = "scaleY(1.6)";
-            dot.style.opacity = "1";
-          }, i * 100);
-          setTimeout(() => {
-            dot.style.transform = "scaleY(1)";
-            dot.style.opacity = "0.5";
-          }, i * 100 + 300);
-        });
-      }, 600);
-    }
-
-    function stopAnimation() {
-      clearInterval(animation);
-      dots.forEach(dot => {
-        dot.style.transform = "scaleY(1)";
-        dot.style.opacity = "0.5";
+  function startAnimation() {
+    console.log("Wave: Start animation");
+    clearInterval(window.waveAnim);
+    window.waveAnim = setInterval(() => {
+      dots.forEach((dot, i) => {
+        setTimeout(() => {
+          dot.style.transform = "scaleY(1.6)";
+          dot.style.opacity = "1";
+        }, i * 100);
+        setTimeout(() => {
+          dot.style.transform = "scaleY(1)";
+          dot.style.opacity = "0.5";
+        }, i * 100 + 300);
       });
-    }
+    }, 600);
+  }
 
-    // 👇 THIS WATCHES THE <html> ELEMENT, which Wix updates
-    const observer = new MutationObserver(() => {
-      const value = document.documentElement.getAttribute("data-animate");
-      if (value === "true") {
-        startAnimation();
-      } else {
-        stopAnimation();
+  function stopAnimation() {
+    console.log("Wave: Stop animation");
+    clearInterval(window.waveAnim);
+    dots.forEach(dot => {
+      dot.style.transform = "scaleY(1)";
+      dot.style.opacity = "0.5";
+    });
+  }
+
+  // Detect attribute change
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((m) => {
+      if (m.attributeName === "data-animate") {
+        const attr = document.body.getAttribute("data-animate");
+        console.log("Observer saw data-animate =", attr);
+        if (attr === "true") startAnimation();
+        else stopAnimation();
       }
     });
+  });
 
-    observer.observe(document.documentElement, { attributes: true });
-
-    // ✅ Run once on load
-    if (document.documentElement.getAttribute("data-animate") === "true") {
-      startAnimation();
-    } else {
-      stopAnimation();
-    }
-  </script>
-</body>
-</html>
+  observer.observe(document.body, { attributes: true });
+</script>
